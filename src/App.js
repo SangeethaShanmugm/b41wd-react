@@ -1,5 +1,11 @@
 import "./App.css";
-import { useState } from "react";
+import { AddColor } from "./AddColor";
+import Msg from "./Msg";
+import double from "./Msg";
+import { Welcome } from "./Welcome"; // named - Import
+
+console.log(double(100));
+
 export default function App() {
   //JS starts
   // const name = "Deepa";
@@ -60,72 +66,30 @@ export default function App() {
       {/* <Counter />
       <Counter />
       <Counter /> */}
-      <AddColor />
+      {/* <AddColor /> */}
+      <Book />
     </div>
   );
   //JSX ends
 }
 
-function AddColor() {
-  // const color = "skyblue";
-  const [color, setColor] = useState("plum");
-
-  const styles = {
-    fontSize: "24px",
-    backgroundColor: color,
+function Book() {
+  const book = {
+    name: "The Charlotte's Web",
+    rating: 8,
+    summary:
+      "The novel tells the story of a livestock pig named Wilbur and his friendship with a barn spider named Charlotte. When Wilbur is in danger of being slaughtered by the farmer, Charlotte writes messages praising Wilbur  in her web in order to persuade the farmer to let him live",
+    poster:
+      "https://cdn.britannica.com/64/103064-050-295C6879/Charlottes-Web-EB-Garth-Williams.jpg",
   };
   return (
-    <div>
-      <input
-        onChange={(event) => setColor(event.target.value)}
-        style={styles}
-        type="text"
-      />
-    </div>
-  );
-}
-
-function Counter() {
-  // let like = 10;
-  const [like, setLike] = useState(0);
-  const [dislike, setDislike] = useState(0);
-  return (
-    <div>
-      {/* onClick - camelCase */}
-      <button
-        onClick={() => {
-          setLike(like + 1);
-        }}
-      >
-        👍 {like}
-      </button>
-      <button
-        onClick={() => {
-          setDislike(dislike + 1);
-        }}
-      >
-        👎 {dislike}
-      </button>
-    </div>
-  );
-}
-
-function Welcome({ name }) {
-  return (
-    <div>
-      <h1>Hello {name}🥳🥳🥳🥳🥳</h1>
-      {/* <h1>Hello {props.name1}🥳🥳🥳🥳🥳</h1> */}
-    </div>
-  );
-}
-
-//Profile pic and name
-function Msg({ name, pic }) {
-  return (
-    <div className="user-container">
-      <img className="profile-pic" src={pic} alt={name} />
-      <h1>{name}</h1>
-      <Counter />
+    <div className="book-container">
+      <img className="book-poster" src={book.poster} alt={book.name} />
+      <div className="book-specs">
+        <h2 className="book-name">{book.name}</h2>
+        <p className="book-rating">⭐{book.rating}</p>
+      </div>
+      <p className="book-summary">{book.summary}</p>
     </div>
   );
 }
@@ -133,13 +97,10 @@ function Msg({ name, pic }) {
 //App - core component
 //JSX -JS XML - converted to JS
 //JSX - babel will converted to JS
-
 //Custom components
 // 1. First letter must be captial
 // 2. It return a JSX element
-
 //{} - Template Syntax
-
 //Hooks - function
 //useState -
 //const [state, setState] = useState(initialValue)
