@@ -50,3 +50,10 @@
 .book-rating {
   font-size: 20px;
 }
+
+.book-list {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
