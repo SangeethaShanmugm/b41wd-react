@@ -1,6 +1,9 @@
 import { useState } from "react";
 import "./App.css";
 import { Counter } from "./Counter";
+import { AddColor } from "./AddColor";
+import { Msg } from "./Msg";
+import { Routes, Route, Link } from "react-router-dom";
 const INITIAL_BOOK_LIST = [
   {
     name: "Charlotte's web",
@@ -63,14 +66,90 @@ const INITIAL_BOOK_LIST = [
 ];
 
 export default function App() {
-  const bookList = INITIAL_BOOK_LIST;
   return (
     <div className="App">
-      <div className="book-list">
-        {bookList.map((bk, index) => (
-          <Book key={index} book={bk} />
-        ))}
-      </div>
+      <nav>
+        <ul>
+          <li>
+            {/* Link change page without refresh */}
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/book">BookList</Link>
+          </li>
+          <li>
+            <Link to="/color-game">AddColor</Link>
+          </li>
+          <li>
+            <Link to="/users">Users</Link>
+          </li>
+          <li>
+            <Link to="/somewhere">Somewhere</Link>
+          </li>
+        </ul>
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/book" element={<BookList />} />
+        <Route path="/color-game" element={<AddColor />} />
+        <Route path="/users" element={<UserList />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </div>
+  );
+}
+
+function NotFoundPage() {
+  return (
+    <div>
+      <img
+        src="https://cdn.dribbble.com/users/469578/screenshots/2597126/404-drib23.gif"
+        alt="404"
+      />
+    </div>
+  );
+}
+
+function UserList() {
+  const users = [
+    {
+      name: "Ibrahim",
+      pic: "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg?cs=srgb&dl=pexels-suliman-sallehi-1704488.jpg&fm=jpg",
+    },
+    {
+      name: "Abdul",
+      pic: "https://cdn.pixabay.com/photo/2014/02/27/16/10/flowers-276014__340.jpg",
+    },
+    {
+      name: "Abilash",
+      pic: "https://www.unigreet.com/wp-content/uploads/2020/04/Smiley-816x1024.jpg",
+    },
+    {
+      name: "Amreesh",
+      pic: "https://i.pinimg.com/736x/5a/e5/98/5ae598ff624217b9a5c008beb8c512d0.jpg",
+    },
+  ];
+  return (
+    <div>
+      {users.map((usr) => (
+        <Msg name={usr.name} pic={usr.pic} />
+      ))}
+    </div>
+  );
+}
+
+function Home() {
+  return <h1>Welcome to Book App 😉😉🥳🥳</h1>;
+}
+
+function BookList() {
+  const bookList = INITIAL_BOOK_LIST;
+  return (
+    <div className="book-list">
+      {bookList.map((bk, index) => (
+        <Book key={index} book={bk} />
+      ))}
     </div>
   );
 }
@@ -97,9 +176,10 @@ function Book({ book }) {
         </p>
       </div>
       <button onClick={() => setShow(!show)}>Toggle description</button>
-      <p style={summaryStyles} className="book-summary">
+      {/* <p style={summaryStyles} className="book-summary">
         {book.summary}
-      </p>
+      </p> */}
+      {show ? <p className="book-summary"> {book.summary} </p> : ""}
       <Counter />
     </div>
   );

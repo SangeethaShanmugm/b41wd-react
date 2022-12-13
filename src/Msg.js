@@ -5,7 +5,7 @@ import { Counter } from "./Counter";
 // 2. default  - Import & Export - only one can be imported
 
 //Profile pic and name
-export default function Msg({ name, pic }) {
+export function Msg({ name, pic }) {
   return (
     <div className="user-container">
       <img className="profile-pic" src={pic} alt={name} />
