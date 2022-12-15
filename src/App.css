@@ -57,3 +57,10 @@
   flex-wrap: wrap;
   justify-content: space-around;
 }
+
+.add-book-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}

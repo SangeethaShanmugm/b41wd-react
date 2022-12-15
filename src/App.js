@@ -2,8 +2,10 @@ import { useState } from "react";
 import "./App.css";
 import { Counter } from "./Counter";
 import { AddColor } from "./AddColor";
-import { Msg } from "./Msg";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate, useParams } from "react-router-dom";
+import { NotFoundPage } from "./NotFoundPage";
+import { UserList } from "./UserList";
+import { Home } from "./Home";
 const INITIAL_BOOK_LIST = [
   {
     name: "Charlotte's web",
@@ -92,6 +94,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/book" element={<BookList />} />
+        <Route path="/book/:bookid" element={<BookDetail />} />
         <Route path="/color-game" element={<AddColor />} />
         <Route path="/users" element={<UserList />} />
         <Route path="*" element={<NotFoundPage />} />
@@ -100,61 +103,123 @@ export default function App() {
   );
 }
 
-function NotFoundPage() {
-  return (
-    <div>
-      <img
-        src="https://cdn.dribbble.com/users/469578/screenshots/2597126/404-drib23.gif"
-        alt="404"
-      />
-    </div>
-  );
-}
+// function AddBook() {
+//   const [name, setName] = useState("hello");
+//   const [poster, setPoster] = useState("hi");
+//   const [rating, setRating] = useState("cool");
+//   const [summary, setSummary] = useState("awesome");
+//   const [bookList, setBookList] = useState(INITIAL_BOOK_LIST);
+//   console.log(bookList);
+//   return (
+//     <div className="add-book-form">
+//       <input
+//         onChange={(event) => setName(event.target.value)}
+//         type="text"
+//         placeholder="Enter name"
+//         value={name}
+//       />
+//       <input
+//         onChange={(event) => setPoster(event.target.value)}
+//         type="text"
+//         placeholder="Enter poster"
+//         value={poster}
+//       />
+//       <input
+//         onChange={(event) => setRating(event.target.value)}
+//         type="text"
+//         placeholder="Enter rating"
+//         value={rating}
+//       />
+//       <input
+//         onChange={(event) => setSummary(event.target.value)}
+//         type="text"
+//         placeholder="Enter summary"
+//         value={summary}
+//       />
+//       {/* //copy the bookList and add new book to it */}
+//       <button
+//         onClick={() => {
+//           const newBook = {
+//             name: "Hey",
+//             poster: poster,
+//             rating: rating,
+//             summary: summary,
+//           };
+//           console.log(newBook);
+//           setBookList([...bookList, newBook]);
+//         }}
+//       >
+//         Add Book
+//       </button>
+//     </div>
+//   );
+// }
 
-function UserList() {
-  const users = [
-    {
-      name: "Ibrahim",
-      pic: "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg?cs=srgb&dl=pexels-suliman-sallehi-1704488.jpg&fm=jpg",
-    },
-    {
-      name: "Abdul",
-      pic: "https://cdn.pixabay.com/photo/2014/02/27/16/10/flowers-276014__340.jpg",
-    },
-    {
-      name: "Abilash",
-      pic: "https://www.unigreet.com/wp-content/uploads/2020/04/Smiley-816x1024.jpg",
-    },
-    {
-      name: "Amreesh",
-      pic: "https://i.pinimg.com/736x/5a/e5/98/5ae598ff624217b9a5c008beb8c512d0.jpg",
-    },
-  ];
-  return (
-    <div>
-      {users.map((usr) => (
-        <Msg name={usr.name} pic={usr.pic} />
-      ))}
-    </div>
-  );
-}
+function BookDetail() {
+  const { bookid } = useParams();
 
-function Home() {
-  return <h1>Welcome to Book App 😉😉🥳🥳</h1>;
+  return <div>Book detail Page {bookid}</div>;
 }
 
 function BookList() {
-  const bookList = INITIAL_BOOK_LIST;
+  // const bookList = INITIAL_BOOK_LIST;
+  const [name, setName] = useState("");
+  const [poster, setPoster] = useState("");
+  const [rating, setRating] = useState("");
+  const [summary, setSummary] = useState("");
+  const [bookList, setBookList] = useState(INITIAL_BOOK_LIST);
+  console.log(bookList);
   return (
     <div className="book-list">
+      <div className="add-book-form">
+        <input
+          onChange={(event) => setName(event.target.value)}
+          type="text"
+          placeholder="Enter name"
+          value={name}
+        />
+        <input
+          onChange={(event) => setPoster(event.target.value)}
+          type="text"
+          placeholder="Enter poster"
+          value={poster}
+        />
+        <input
+          onChange={(event) => setRating(event.target.value)}
+          type="text"
+          placeholder="Enter rating"
+          value={rating}
+        />
+        <input
+          onChange={(event) => setSummary(event.target.value)}
+          type="text"
+          placeholder="Enter summary"
+          value={summary}
+        />
+        {/* //copy the bookList and add new book to it */}
+        <button
+          onClick={() => {
+            const newBook = {
+              name: name,
+              poster: poster,
+              rating: rating,
+              summary: summary,
+            };
+            console.log(newBook);
+            setBookList([...bookList, newBook]);
+          }}
+        >
+          Add Book
+        </button>
+      </div>
       {bookList.map((bk, index) => (
-        <Book key={index} book={bk} />
+        <Book key={index} book={bk} id={index} />
       ))}
     </div>
   );
 }
 
-function Book({ book }) {
+function Book({ book, id }) {
   const styles = {
     //terinary operator - react- conditional styling
     color: book.rating >= 8 ? "green" : "red",
@@ -166,16 +231,22 @@ function Book({ book }) {
   const summaryStyles = {
     display: show ? "block" : "none",
   };
+
+  const navigate = useNavigate();
+
   return (
     <div className="book-container">
       <img className="book-poster" src={book.poster} alt={book.name} />
       <div className="book-specs">
-        <h2 className="book-name">{book.name}</h2>
+        <h2 className="book-name">
+          {book.name} - {id}
+        </h2>
         <p style={styles} className="book-rating">
           ⭐{book.rating}
         </p>
       </div>
       <button onClick={() => setShow(!show)}>Toggle description</button>
+      <button onClick={() => navigate("/book/" + id)}>Info</button>
       {/* <p style={summaryStyles} className="book-summary">
         {book.summary}
       </p> */}
@@ -184,3 +255,9 @@ function Book({ book }) {
     </div>
   );
 }
+
+//Task 15 mins
+
+//Add Book - 4 input fields
+// name, poster, rating, summary
+// 1 button - Add Book
