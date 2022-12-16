@@ -6,6 +6,12 @@ import { Routes, Route, Link, useNavigate, useParams } from "react-router-dom";
 import { NotFoundPage } from "./NotFoundPage";
 import { UserList } from "./UserList";
 import { Home } from "./Home";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import IconButton from "@mui/material/IconButton";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import InfoIcon from "@mui/icons-material/Info";
 const INITIAL_BOOK_LIST = [
   {
     name: "Charlotte's web",
@@ -68,6 +74,9 @@ const INITIAL_BOOK_LIST = [
 ];
 
 export default function App() {
+  //Lifting the state up -> Lifted from child to parent
+
+  const [bookList, setBookList] = useState(INITIAL_BOOK_LIST);
   return (
     <div className="App">
       <nav>
@@ -93,8 +102,14 @@ export default function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/book" element={<BookList />} />
-        <Route path="/book/:bookid" element={<BookDetail />} />
+        <Route
+          path="/book"
+          element={<BookList bookList={bookList} setBookList={setBookList} />}
+        />
+        <Route
+          path="/book/:bookid"
+          element={<BookDetail bookList={bookList} />}
+        />
         <Route path="/color-game" element={<AddColor />} />
         <Route path="/users" element={<UserList />} />
         <Route path="*" element={<NotFoundPage />} />
@@ -155,49 +170,59 @@ export default function App() {
 //   );
 // }
 
-function BookDetail() {
+function BookDetail({ bookList }) {
   const { bookid } = useParams();
-
-  return <div>Book detail Page {bookid}</div>;
+  const book = bookList[bookid];
+  console.log(bookList);
+  console.log(book);
+  return <div>Book detail Page {book.name}</div>;
 }
 
-function BookList() {
+function BookList({ bookList, setBookList }) {
   // const bookList = INITIAL_BOOK_LIST;
   const [name, setName] = useState("");
   const [poster, setPoster] = useState("");
   const [rating, setRating] = useState("");
   const [summary, setSummary] = useState("");
-  const [bookList, setBookList] = useState(INITIAL_BOOK_LIST);
   console.log(bookList);
   return (
-    <div className="book-list">
+    <div>
       <div className="add-book-form">
-        <input
+        <TextField
+          label="Name"
+          variant="outlined"
           onChange={(event) => setName(event.target.value)}
           type="text"
           placeholder="Enter name"
           value={name}
         />
-        <input
+        <TextField
+          label="Poster"
+          variant="outlined"
           onChange={(event) => setPoster(event.target.value)}
           type="text"
           placeholder="Enter poster"
           value={poster}
         />
-        <input
+        <TextField
+          label="Rating"
+          variant="outlined"
           onChange={(event) => setRating(event.target.value)}
           type="text"
           placeholder="Enter rating"
           value={rating}
         />
-        <input
+        <TextField
+          label="Summary"
+          variant="outlined"
           onChange={(event) => setSummary(event.target.value)}
           type="text"
           placeholder="Enter summary"
           value={summary}
         />
         {/* //copy the bookList and add new book to it */}
-        <button
+        <Button
+          variant="contained"
           onClick={() => {
             const newBook = {
               name: name,
@@ -210,11 +235,13 @@ function BookList() {
           }}
         >
           Add Book
-        </button>
+        </Button>
       </div>
-      {bookList.map((bk, index) => (
-        <Book key={index} book={bk} id={index} />
-      ))}
+      <div className="book-list">
+        {bookList.map((bk, index) => (
+          <Book key={index} book={bk} id={index} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -245,8 +272,21 @@ function Book({ book, id }) {
           ⭐{book.rating}
         </p>
       </div>
-      <button onClick={() => setShow(!show)}>Toggle description</button>
-      <button onClick={() => navigate("/book/" + id)}>Info</button>
+      <IconButton
+        aria-label="toggle-description"
+        color="primary"
+        onClick={() => setShow(!show)}
+      >
+        {show ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+      </IconButton>
+      {/* <button onClick={() => setShow(!show)}>Toggle description</button> */}
+      <IconButton
+        aria-label="info"
+        color="primary"
+        onClick={() => navigate("/book/" + id)}
+      >
+        <InfoIcon />
+      </IconButton>
       {/* <p style={summaryStyles} className="book-summary">
         {book.summary}
       </p> */}
@@ -261,3 +301,12 @@ function Book({ book, id }) {
 //Add Book - 4 input fields
 // name, poster, rating, summary
 // 1 button - Add Book
+
+// BookList(data) -> Book(data) -> Counter(data)
+//                -> Contact(data)
+
+
+//                       App
+
+
+//         BookList           BookDetail
