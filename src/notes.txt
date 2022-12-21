@@ -88,3 +88,26 @@ import Msg from "./Msg";
 // }
 
 // export default App
+
+
+
+            {/* <nav>
+              <ul>
+                <li>
+                  Link change page without refresh
+                  <Link to="/">Home</Link>
+                </li>
+                <li>
+                  <Link to="/book">BookList</Link>
+                </li>
+                <li>
+                  <Link to="/color-game">AddColor</Link>
+                </li>
+                <li>
+                  <Link to="/users">Users</Link>
+                </li>
+                <li>
+                  <Link to="/somewhere">Somewhere</Link>
+                </li>
+              </ul>
+            </nav> */}

@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { Counter } from "./Counter";
 import { AddColor } from "./AddColor";
-import { Routes, Route, Link, useNavigate, useParams } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { NotFoundPage } from "./NotFoundPage";
 import { UserList } from "./UserList";
 import { Home } from "./Home";
@@ -12,6 +12,13 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import IconButton from "@mui/material/IconButton";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InfoIcon from "@mui/icons-material/Info";
+import { BookDetail } from "./BookDetail";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 const INITIAL_BOOK_LIST = [
   {
     name: "Charlotte's web",
@@ -20,6 +27,7 @@ const INITIAL_BOOK_LIST = [
     rating: 8.8,
     summary:
       "The novel tells the story of a livestock pig named Wilbur and his friendship with a barn spider named Charlotte. When Wilbur is in danger of being slaughtered by the farmer, Charlotte writes messages praising Wilbur in her web in order to persuade the farmer to let him live.",
+    trailer: "https://www.youtube.com/embed/zS3qOr0zAJg",
   },
   {
     name: "The power of your subconscious mind",
@@ -28,6 +36,7 @@ const INITIAL_BOOK_LIST = [
     rating: 7,
     summary:
       "Your subconscious mind is a powerful force to be reckoned with. It makes up around 95% of your brain power and handles everything your body needs to function properly, from eating and breathing to digesting and making memories",
+    trailer: "https://www.youtube.com/embed/Solb9uA-tgQ",
   },
   {
     name: "Attitude is everything ",
@@ -35,6 +44,7 @@ const INITIAL_BOOK_LIST = [
     rating: 8.1,
     summary:
       "Attitude, In psychology, a mental position with regard to a fact or state. Attitudes reflect a tendency to classify objects and events and to react to them with some consistency. Attitudes are not directly observable but rather are inferred from the objective, evaluative responses a person makes.",
+    trailer: "https://www.youtube.com/embed/9p2hzdAosQ0",
   },
   {
     name: "The Secret",
@@ -75,107 +85,65 @@ const INITIAL_BOOK_LIST = [
 
 export default function App() {
   //Lifting the state up -> Lifted from child to parent
-
   const [bookList, setBookList] = useState(INITIAL_BOOK_LIST);
+  const [mode, setMode] = useState("light");
+  const navigate = useNavigate();
+  //1. Creating - createContext
+  // 2. Publisher - provider - context.provider
+  // 3. subscriber - useContext -useContext(context)
+
+  const theme = createTheme({
+    palette: {
+      mode: mode,
+    },
+  });
+
   return (
-    <div className="App">
-      <nav>
-        <ul>
-          <li>
-            {/* Link change page without refresh */}
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/book">BookList</Link>
-          </li>
-          <li>
-            <Link to="/color-game">AddColor</Link>
-          </li>
-          <li>
-            <Link to="/users">Users</Link>
-          </li>
-          <li>
-            <Link to="/somewhere">Somewhere</Link>
-          </li>
-        </ul>
-      </nav>
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/book"
-          element={<BookList bookList={bookList} setBookList={setBookList} />}
-        />
-        <Route
-          path="/book/:bookid"
-          element={<BookDetail bookList={bookList} />}
-        />
-        <Route path="/color-game" element={<AddColor />} />
-        <Route path="/users" element={<UserList />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <div>
+        <AppBar position="static">
+          <Toolbar>
+            <Button color="inherit" onClick={() => navigate("/")}>
+              Home
+            </Button>
+            <Button color="inherit" onClick={() => navigate("/book")}>
+              BookList
+            </Button>
+            <Button color="inherit" onClick={() => navigate("/color-game")}>
+              AddColor
+            </Button>
+            <Button color="inherit" onClick={() => navigate("/users")}>
+              Users
+            </Button>
+            <Button
+              startIcon={
+                mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />
+              }
+              color="inherit"
+              onClick={() => setMode(mode === "light" ? "dark" : "light")}
+            >
+              {mode === "light" ? "dark" : "light"} Mode
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/book"
+            element={<BookList bookList={bookList} setBookList={setBookList} />}
+          />
+          <Route
+            path="/book/:bookid"
+            element={<BookDetail bookList={bookList} />}
+          />
+          <Route path="/color-game" element={<AddColor />} />
+          <Route path="/users" element={<UserList />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </div>
+    </ThemeProvider>
   );
-}
-
-// function AddBook() {
-//   const [name, setName] = useState("hello");
-//   const [poster, setPoster] = useState("hi");
-//   const [rating, setRating] = useState("cool");
-//   const [summary, setSummary] = useState("awesome");
-//   const [bookList, setBookList] = useState(INITIAL_BOOK_LIST);
-//   console.log(bookList);
-//   return (
-//     <div className="add-book-form">
-//       <input
-//         onChange={(event) => setName(event.target.value)}
-//         type="text"
-//         placeholder="Enter name"
-//         value={name}
-//       />
-//       <input
-//         onChange={(event) => setPoster(event.target.value)}
-//         type="text"
-//         placeholder="Enter poster"
-//         value={poster}
-//       />
-//       <input
-//         onChange={(event) => setRating(event.target.value)}
-//         type="text"
-//         placeholder="Enter rating"
-//         value={rating}
-//       />
-//       <input
-//         onChange={(event) => setSummary(event.target.value)}
-//         type="text"
-//         placeholder="Enter summary"
-//         value={summary}
-//       />
-//       {/* //copy the bookList and add new book to it */}
-//       <button
-//         onClick={() => {
-//           const newBook = {
-//             name: "Hey",
-//             poster: poster,
-//             rating: rating,
-//             summary: summary,
-//           };
-//           console.log(newBook);
-//           setBookList([...bookList, newBook]);
-//         }}
-//       >
-//         Add Book
-//       </button>
-//     </div>
-//   );
-// }
-
-function BookDetail({ bookList }) {
-  const { bookid } = useParams();
-  const book = bookList[bookid];
-  console.log(bookList);
-  console.log(book);
-  return <div>Book detail Page {book.name}</div>;
 }
 
 function BookList({ bookList, setBookList }) {
@@ -184,6 +152,7 @@ function BookList({ bookList, setBookList }) {
   const [poster, setPoster] = useState("");
   const [rating, setRating] = useState("");
   const [summary, setSummary] = useState("");
+  const [trailer, setTrailer] = useState("");
   console.log(bookList);
   return (
     <div>
@@ -220,6 +189,14 @@ function BookList({ bookList, setBookList }) {
           placeholder="Enter summary"
           value={summary}
         />
+        <TextField
+          label="Trailer"
+          variant="outlined"
+          onChange={(event) => setTrailer(event.target.value)}
+          type="text"
+          placeholder="Enter trailer"
+          value={trailer}
+        />
         {/* //copy the bookList and add new book to it */}
         <Button
           variant="contained"
@@ -229,6 +206,7 @@ function BookList({ bookList, setBookList }) {
               poster: poster,
               rating: rating,
               summary: summary,
+              trailer: trailer,
             };
             console.log(newBook);
             setBookList([...bookList, newBook]);
@@ -305,8 +283,6 @@ function Book({ book, id }) {
 // BookList(data) -> Book(data) -> Counter(data)
 //                -> Contact(data)
 
-
 //                       App
-
 
 //         BookList           BookDetail
