@@ -110,6 +110,9 @@ export default function App() {
             <Button color="inherit" onClick={() => navigate("/book")}>
               BookList
             </Button>
+            <Button color="inherit" onClick={() => navigate("/book/add")}>
+              AddBook
+            </Button>
             <Button color="inherit" onClick={() => navigate("/color-game")}>
               AddColor
             </Button>
@@ -137,6 +140,12 @@ export default function App() {
             path="/book/:bookid"
             element={<BookDetail bookList={bookList} />}
           />
+
+          <Route
+            path="/book/add"
+            element={<AddBook bookList={bookList} setBookList={setBookList} />}
+          />
+
           <Route path="/color-game" element={<AddColor />} />
           <Route path="/novel" element={<Navigate replace to="/book" />} />
           <Route path="/users" element={<UserList />} />
@@ -148,13 +157,13 @@ export default function App() {
   );
 }
 
-function BookList({ bookList, setBookList }) {
-  // const bookList = INITIAL_BOOK_LIST;
+function AddBook({ bookList, setBookList }) {
   const [name, setName] = useState("");
   const [poster, setPoster] = useState("");
   const [rating, setRating] = useState("");
   const [summary, setSummary] = useState("");
   const [trailer, setTrailer] = useState("");
+  const navigate = useNavigate();
   console.log(bookList);
   return (
     <div>
@@ -212,11 +221,21 @@ function BookList({ bookList, setBookList }) {
             };
             console.log(newBook);
             setBookList([...bookList, newBook]);
+            navigate("/book");
           }}
         >
           Add Book
         </Button>
       </div>
+    </div>
+  );
+}
+
+function BookList({ bookList }) {
+  // const bookList = INITIAL_BOOK_LIST;
+  // console.log(bookList);
+  return (
+    <div>
       <div className="book-list">
         {bookList.map((bk, index) => (
           <Book key={index} book={bk} id={index} />
