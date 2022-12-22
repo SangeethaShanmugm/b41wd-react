@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { Counter } from "./Counter";
 import { AddColor } from "./AddColor";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Routes, Route, Link, useNavigate, Navigate } from "react-router-dom";
 import { NotFoundPage } from "./NotFoundPage";
 import { UserList } from "./UserList";
 import { Home } from "./Home";
@@ -138,8 +138,10 @@ export default function App() {
             element={<BookDetail bookList={bookList} />}
           />
           <Route path="/color-game" element={<AddColor />} />
+          <Route path="/novel" element={<Navigate replace to="/book" />} />
           <Route path="/users" element={<UserList />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="/404" element={<NotFoundPage />} />
+          <Route path="*" element={<Navigate replace to="/404" />} />
         </Routes>
       </div>
     </ThemeProvider>
