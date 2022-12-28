@@ -1,17 +1,11 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { Counter } from "./Counter";
 import { AddColor } from "./AddColor";
 import { Routes, Route, Link, useNavigate, Navigate } from "react-router-dom";
 import { NotFoundPage } from "./NotFoundPage";
 import { UserList } from "./UserList";
 import { Home } from "./Home";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import IconButton from "@mui/material/IconButton";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import InfoIcon from "@mui/icons-material/Info";
 import { BookDetail } from "./BookDetail";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -19,6 +13,8 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { BookList } from "./BookList";
+import { AddBook } from "./AddBook";
 // const INITIAL_BOOK_LIST = [
 //   {
 //     name: "Charlotte's web",
@@ -140,14 +136,8 @@ export default function App() {
         </AppBar>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route
-            path="/book"
-            element={<BookList bookList={bookList} setBookList={setBookList} />}
-          />
-          <Route
-            path="/book/:bookid"
-            element={<BookDetail bookList={bookList} />}
-          />
+          <Route path="/book" element={<BookList />} />
+          <Route path="/book/:bookid" element={<BookDetail />} />
 
           <Route
             path="/book/add"
@@ -164,154 +154,3 @@ export default function App() {
     </ThemeProvider>
   );
 }
-
-function AddBook({ bookList, setBookList }) {
-  const [name, setName] = useState("");
-  const [poster, setPoster] = useState("");
-  const [rating, setRating] = useState("");
-  const [summary, setSummary] = useState("");
-  const [trailer, setTrailer] = useState("");
-  const navigate = useNavigate();
-  console.log(bookList);
-  return (
-    <div>
-      <div className="add-book-form">
-        <TextField
-          label="Name"
-          variant="outlined"
-          onChange={(event) => setName(event.target.value)}
-          type="text"
-          placeholder="Enter name"
-          value={name}
-        />
-        <TextField
-          label="Poster"
-          variant="outlined"
-          onChange={(event) => setPoster(event.target.value)}
-          type="text"
-          placeholder="Enter poster"
-          value={poster}
-        />
-        <TextField
-          label="Rating"
-          variant="outlined"
-          onChange={(event) => setRating(event.target.value)}
-          type="text"
-          placeholder="Enter rating"
-          value={rating}
-        />
-        <TextField
-          label="Summary"
-          variant="outlined"
-          onChange={(event) => setSummary(event.target.value)}
-          type="text"
-          placeholder="Enter summary"
-          value={summary}
-        />
-        <TextField
-          label="Trailer"
-          variant="outlined"
-          onChange={(event) => setTrailer(event.target.value)}
-          type="text"
-          placeholder="Enter trailer"
-          value={trailer}
-        />
-        {/* //copy the bookList and add new book to it */}
-        <Button
-          variant="contained"
-          onClick={() => {
-            const newBook = {
-              name: name,
-              poster: poster,
-              rating: rating,
-              summary: summary,
-              trailer: trailer,
-            };
-            console.log(newBook);
-            setBookList([...bookList, newBook]);
-            navigate("/book");
-          }}
-        >
-          Add Book
-        </Button>
-      </div>
-    </div>
-  );
-}
-
-function BookList({ bookList }) {
-  // const bookList = INITIAL_BOOK_LIST;
-  // console.log(bookList);
-  return (
-    <div>
-      <div className="book-list">
-        {bookList.map((bk, index) => (
-          <Book key={index} book={bk} id={index} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Book({ book, id }) {
-  const styles = {
-    //terinary operator - react- conditional styling
-    color: book.rating >= 8 ? "green" : "red",
-  };
-
-  const [show, setShow] = useState(true);
-  //true - visible
-  //false - hide
-  const summaryStyles = {
-    display: show ? "block" : "none",
-  };
-
-  const navigate = useNavigate();
-
-  return (
-    <div className="book-container">
-      <img className="book-poster" src={book.poster} alt={book.name} />
-      <div className="book-specs">
-        <h2 className="book-name">
-          {book.name} - {id}
-        </h2>
-        <p style={styles} className="book-rating">
-          ⭐{book.rating}
-        </p>
-      </div>
-      <IconButton
-        aria-label="toggle-description"
-        color="primary"
-        onClick={() => setShow(!show)}
-      >
-        {show ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-      </IconButton>
-      {/* <button onClick={() => setShow(!show)}>Toggle description</button> */}
-      <IconButton
-        aria-label="info"
-        color="primary"
-        onClick={() => navigate("/book/" + id)}
-      >
-        <InfoIcon />
-      </IconButton>
-      {/* <p style={summaryStyles} className="book-summary">
-        {book.summary}
-      </p> */}
-      {show ? <p className="book-summary"> {book.summary} </p> : ""}
-      <Counter />
-    </div>
-  );
-}
-
-//Task 15 mins
-
-//Add Book - 4 input fields
-// name, poster, rating, summary
-// 1 button - Add Book
-
-// BookList(data) -> Book(data) -> Counter(data)
-//                -> Contact(data)
-
-//                       App
-
-//         BookList           BookDetail
