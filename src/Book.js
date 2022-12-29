@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InfoIcon from "@mui/icons-material/Info";
 
-export function Book({ book, id }) {
+export function Book({ book, id, deleteButton }) {
   const styles = {
     //terinary operator - react- conditional styling
     color: book.rating >= 8 ? "green" : "red",
@@ -51,7 +51,7 @@ export function Book({ book, id }) {
               {book.summary}
             </p> */}
       {show ? <p className="book-summary"> {book.summary} </p> : ""}
-      <Counter />
+      <Counter /> {deleteButton}
     </div>
   );
 }
