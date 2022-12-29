@@ -15,6 +15,7 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { BookList } from "./BookList";
 import { AddBook } from "./AddBook";
+import { EditBook } from "./EditBook";
 // const INITIAL_BOOK_LIST = [
 //   {
 //     name: "Charlotte's web",
@@ -144,6 +145,8 @@ export default function App() {
             element={<AddBook bookList={bookList} setBookList={setBookList} />}
           />
 
+          <Route path="/book/edit/:bookid" element={<EditBook />} />
+
           <Route path="/color-game" element={<AddColor />} />
           <Route path="/novel" element={<Navigate replace to="/book" />} />
           <Route path="/users" element={<UserList />} />
@@ -154,3 +157,5 @@ export default function App() {
     </ThemeProvider>
   );
 }
+
+
