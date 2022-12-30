@@ -2,11 +2,15 @@ import { useFormik } from "formik";
 
 export function BasicForm() {
   const formik = useFormik({
-    initialValues: { email: "cool", password: "awesome" },
+    initialValues: { email: "", password: "" },
+    validationSchema: ,
+    onSubmit: (values) => {
+      console.log("onSubmit", values);
+    },
   });
 
   return (
-    <form>
+    <form onSubmit={formik.handleSubmit}>
       <input
         id="email"
         name="email"
@@ -23,7 +27,7 @@ export function BasicForm() {
         type="password"
         placeholder="Password"
       />
-      <button>Submit</button>
+      <button type="submit">Submit</button>
     </form>
   );
 }
