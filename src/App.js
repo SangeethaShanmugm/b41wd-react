@@ -17,6 +17,7 @@ import { BookList } from "./BookList";
 import { AddBook } from "./AddBook";
 import { EditBook } from "./EditBook";
 import { BasicForm } from "./BasicForm";
+import { API } from "./global";
 // const INITIAL_BOOK_LIST = [
 //   {
 //     name: "Charlotte's web",
@@ -83,7 +84,7 @@ import { BasicForm } from "./BasicForm";
 
 export default function App() {
   //Lifting the state up -> Lifted from child to parent
-  const [bookList, setBookList] = useState([]);
+  // const [bookList, setBookList] = useState([]);
   const [mode, setMode] = useState("light");
   const navigate = useNavigate();
   //1. Creating - createContext
@@ -96,13 +97,13 @@ export default function App() {
     },
   });
 
-  useEffect(() => {
-    fetch("https://63a517c52a73744b0085940e.mockapi.io/book")
-      .then((res) => res.json())
-      .then((data) => {
-        setBookList(data);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`${API}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setBookList(data);
+  //     });
+  // }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -144,10 +145,7 @@ export default function App() {
           <Route path="/book" element={<BookList />} />
           <Route path="/book/:bookid" element={<BookDetail />} />
 
-          <Route
-            path="/book/add"
-            element={<AddBook bookList={bookList} setBookList={setBookList} />}
-          />
+          <Route path="/book/add" element={<AddBook />} />
 
           <Route path="/book/edit/:bookid" element={<EditBook />} />
 
@@ -162,5 +160,3 @@ export default function App() {
     </ThemeProvider>
   );
 }
-
-

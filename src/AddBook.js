@@ -60,15 +60,15 @@ export function AddBook({ bookList, setBookList }) {
 
   const createBook = (newBook) => {
     console.log("createBook", newBook);
-    // fetch(`${API}/book`, {
-    //   method: "POST",
-    //   body: JSON.stringify(newBook),
-    //   headers: { "Content-Type": "application/json" },
-    // })
-    //   .then((data) => data.json())
-    //   .then(() => navigate("/book"));
-    // console.log(newBook);
-    // setBookList([...bookList, newBook]);
+    fetch(`${API}/book`, {
+      method: "POST",
+      body: JSON.stringify(newBook),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((data) => data.json())
+      .then(() => navigate("/book"));
+    console.log(newBook);
+    setBookList([...bookList, newBook]);
   };
 
   return (
