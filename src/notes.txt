@@ -1,3 +1,8 @@
+deployment Link
+-----------------
+render - https://b41-wd-node.onrender.com/
+vercel - https://b41-wd-node-gpkk.vercel.app/
+
  {/* {users.map((usr) => (
         <Msg name={usr.name} pic={usr.pic} />
       ))} */}
