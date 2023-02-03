@@ -11,7 +11,7 @@ export function BookList() {
   const [bookList, setBookList] = useState([]);
   const navigate = useNavigate();
   const getBooks = () => {
-    fetch(`${API}/book`, {
+    (`${API}/book`, {
       method: "GET",
     })
       .then((data) => data.json())
